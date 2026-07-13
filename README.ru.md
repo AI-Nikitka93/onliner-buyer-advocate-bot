@@ -129,7 +129,7 @@ npm run contract:onliner:soft
 
 ---
 
-## 📸 Скриншоты и Дизайн
+## 📸 Скриншоты
 
 ### 🤖 Интерфейс Telegram-бота
 Бот выводит наглядные сигналы выгоды, разоблачая накрутки продавцов, отображая динамику цен и генерируя краткую сводку отзывов покупателей:
@@ -137,21 +137,6 @@ npm run contract:onliner:soft
 <p align="center">
   <img src="docs/images/bot_telegram_price_history.png" width="45%" alt="Проверка истории цен" />
   <img src="docs/images/bot_telegram_price_comparison.png" width="45%" alt="Сравнение цен" />
-</p>
-
-### 🖥️ Локальная веб-панель управления
-Элегантная темная веб-панель со стеклянным эффектом (glassmorphism) для ручного управления, диагностики и запуска проверок:
-
-<p align="center">
-  <img src="docs/images/localhost_homepage.png" width="90%" alt="Панель управления" />
-</p>
-
-### 🎨 Брендинг / Аватарки
-Премиальные аватарки, созданные для бота и канала:
-
-<p align="center">
-  <img src="docs/images/bot_avatar.jpg" width="45%" alt="Аватарка бота" />
-  <img src="docs/images/channel_avatar.jpg" width="45%" alt="Аватарка канала" />
 </p>
 
 ---
