@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { channelGateFailures, channelMaturitySummary } from "./channel-maturity.mjs";
 
-const workerUrl = (process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.georgaishkin.workers.dev").replace(/\/$/, "");
+const workerUrl = (process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev").replace(/\/$/, "");
 const adminToken = process.env.ADMIN_API_TOKEN || "";
 const require24h = process.argv.includes("--require-24h") || process.env.CHANNEL_GATE_REQUIRE_24H === "true";
 

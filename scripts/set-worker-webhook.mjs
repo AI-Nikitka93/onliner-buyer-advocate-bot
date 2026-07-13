@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-const workerUrl = process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.georgaishkin.workers.dev";
+const workerUrl = process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev";
 const adminToken = process.env.ADMIN_API_TOKEN || "";
 
 if (!adminToken || /change_me|your_|PASTE_|MY_/.test(adminToken)) {

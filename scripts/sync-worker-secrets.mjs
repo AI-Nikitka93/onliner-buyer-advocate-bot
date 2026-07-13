@@ -20,6 +20,7 @@ function putSecret(name, value) {
     const child = spawn(wranglerBin(), ["wrangler", "secret", "put", name], {
       cwd: process.cwd(),
       stdio: ["pipe", "pipe", "pipe"],
+      shell: process.platform === "win32",
     });
     let stdout = "";
     let stderr = "";

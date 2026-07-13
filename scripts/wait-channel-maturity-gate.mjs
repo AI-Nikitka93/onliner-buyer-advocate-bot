@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { channelGateFailures, channelMaturitySummary } from "./channel-maturity.mjs";
 
-const workerUrl = (process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.georgaishkin.workers.dev").replace(/\/$/, "");
+const workerUrl = (process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev").replace(/\/$/, "");
 const adminToken = process.env.ADMIN_API_TOKEN || "";
 const waitMinutes = Math.max(1, Number(process.env.CHANNEL_GATE_WAIT_MINUTES || 90) || 90);
 const pollSeconds = Math.max(10, Number(process.env.CHANNEL_GATE_POLL_SECONDS || 60) || 60);

@@ -1184,7 +1184,8 @@ async function addFiveElementPilotSource(comparison: PriceComparison, product: O
   }
 }
 
-async function enrichPriceComparison(comparison: PriceComparison, env: Env) {
+async function enrichPriceComparison(comparison: PriceComparison, env: Env, skipShopEnrichment?: boolean) {
+  if (skipShopEnrichment) return comparison;
   const shopIdPattern = /^продавец #(\d+)$/;
   const offers = await Promise.all(comparison.bestOffers.map(async (offer) => {
     const match = shopIdPattern.exec(offer.sellerName);
@@ -1534,7 +1535,7 @@ function discountManipulationWarning(advertisedDiscount: number, honestDiscountP
 async function productFromOnliner(
   product: OnlinerProduct,
   env: Env,
-  options: { includeExternalPricePilot?: boolean } = {},
+  options: { includeExternalPricePilot?: boolean; skipShopEnrichment?: boolean } = {},
 ): Promise<ProductView> {
   const productUrl = product.html_url || `https://catalog.onliner.by/${product.key}`;
   const [history, reviewResult, positions] = await Promise.all([
@@ -1551,7 +1552,7 @@ async function productFromOnliner(
   const isFakeDiscount = Boolean(priceManipulationWarning);
   const pros = reviewEvidence.topPros.map(reviewInsightText).slice(0, 3);
   const cons = reviewEvidence.topCons.map(reviewInsightText).slice(0, 3);
-  const onlinerComparison = await enrichPriceComparison(normalizeOnlinerPositions(product.key, productUrl, positions), env);
+  const onlinerComparison = await enrichPriceComparison(normalizeOnlinerPositions(product.key, productUrl, positions), env, options.skipShopEnrichment);
   const priceComparison = options.includeExternalPricePilot === false
     ? onlinerComparison
     : await addFiveElementPilotSource(onlinerComparison, product, env);
@@ -1742,7 +1743,7 @@ async function findDeals(env: Env, overrides: DealFilterOverrides = {}) {
   if (!products.length) products = await findQueryDealCandidates(env);
 
   const converted = await Promise.allSettled(products.slice(0, analyzeLimit).map((product) => (
-    productFromOnliner(product, env, { includeExternalPricePilot: false })
+    productFromOnliner(product, env, { includeExternalPricePilot: false, skipShopEnrichment: true })
   )));
   return converted
     .filter((result): result is PromiseFulfilledResult<ProductView> => result.status === "fulfilled")
@@ -3184,7 +3185,7 @@ function workerPublicAppUrl(env: Env) {
     const normalized = configured.replace(/\/+$/, "");
     return normalized.endsWith("/app") ? normalized : `${normalized}/app`;
   }
-  return "https://onliner-buyer-advocate-bot.georgaishkin.workers.dev/app";
+  return "https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev/app";
 }
 
 async function runPriceWatchScan(env: Env, options: PriceWatchScanOptions = {}) {

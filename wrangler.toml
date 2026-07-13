@@ -27,13 +27,13 @@ ENABLE_PRICE_WATCHES = "true"
 PRICE_WATCH_DROP_PERCENT = "5"
 PRICE_WATCH_SCAN_LIMIT = "25"
 PRICE_WATCH_NOTIFY_COOLDOWN_HOURS = "24"
-WORKER_PUBLIC_URL = "https://onliner-buyer-advocate-bot.georgaishkin.workers.dev"
+WORKER_PUBLIC_URL = "https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev"
 PUBLIC_API_RATE_LIMIT_MAX = "60"
 PUBLIC_API_RATE_LIMIT_WINDOW_SECONDS = "60"
 
 [[kv_namespaces]]
 binding = "DEAL_ALERTS_KV"
-id = "facc5ea0e880428fb3d9997c591d1035"
+id = "85b6047d0b2b45d08d462bbadff51ef7"
 
 [[ratelimits]]
 name = "PUBLIC_API_RATE_LIMITER"

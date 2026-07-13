@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { buildReleaseReadiness } from "./release-readiness-core.mjs";
 
-const workerUrl = (process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.georgaishkin.workers.dev").replace(/\/$/, "");
+const workerUrl = (process.env.WORKER_URL || "https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev").replace(/\/$/, "");
 const adminToken = process.env.ADMIN_API_TOKEN || "";
 const requireMature = process.argv.includes("--require-mature") || process.env.RELEASE_GATE_REQUIRE_MATURE === "true";
 
