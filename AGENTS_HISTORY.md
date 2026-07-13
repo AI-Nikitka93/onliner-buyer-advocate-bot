@@ -49,3 +49,7 @@
 - Verification: Ran `npx tsx scripts/audit_onliner.ts` to fetch 100 super-price discounts, fetch history, check criteria, and generate reports.
 - Status: DONE
 
+- **Rating Constraint Removed (2026-07-13 19:02:00 +03:00)**:
+  - **Change**: Removed `ratingOk` constraint check from `isPublishableDeal` inside both `worker/index.ts` and `src/server/onliner.ts`.
+  - **Impact**: Products with ratings under 4.0 (like popular SSDs and other products with mixed reviews) can now be published if they offer a genuine honest discount.
+  - **Redeployment**: Changes compiled and deployed successfully to Cloudflare.
