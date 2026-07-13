@@ -1,141 +1,143 @@
 # ⚖️ Onliner Buyer Advocate Bot
 
+**English** | [Русский](README.ru.md)
+
 [![Production Verify](https://github.com/your-org/onliner-buyer-advocate-bot/actions/workflows/verify.yml/badge.svg)](https://github.com/your-org/onliner-buyer-advocate-bot/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform: Cloudflare Workers](https://img.shields.io/badge/Platform-Cloudflare_Workers-F38020.svg?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com)
 [![Stack: Node.js & TypeScript](https://img.shields.io/badge/Stack-Node.js_%2F_TypeScript-3178C6.svg?logo=typescript&logoColor=white)](package.json)
 
-Неофициальный Telegram-бот и автоматический канал-радар, выступающий в роли **«цифрового адвоката покупателя»** на Onliner.by. 
+An unofficial Telegram Bot and automated channel discount radar acting as a **"digital buyer advocate"** for Onliner.by.
 
-В отличие от стандартных агрегаторов скидок, этот бот выявляет и жестко отсекает **маркетинговые уловки продавцов** (такие как искусственное завышение цены перед распродажей) путем анализа 12-месячной медианы цен.
-
----
-
-## 🎯 Ключевые возможности
-
-*   **Честный радар скидок (Onliner Super-Prices):**
-    *   Сканирует каталог и вычисляет реальное отклонение цены от медианного исторического значения.
-    *   Фильтрует накрученные скидки (`isFakeDiscount`). Если продавец заявляет скидку 70%, а цена на самом деле выше или равна обычной медиане — сделка блокируется.
-*   **Гибкие правила публикации:**
-    *   **Минимальный порог цен:** По умолчанию публикуются товары стоимостью от `15 BYN` (настраивается через `ONLINER_DEAL_MIN_PRICE_BYN`).
-    *   **Обход лимита цены для супер-скидок:** Любая честная скидка **от 50% и выше** автоматически обходит ценовой лимит (например, товар за 1 BYN с реальной скидкой 95% попадет в канал).
-    *   **Минимальное число предложений:** Сделка рассматривается только при наличии $\ge 2$ продавцов для обеспечения здоровой конкуренции.
-*   **Интеграция с внешними источниками:**
-    *   Поддерживает пилотное сравнение с ценами сети **«5 элемент»** (`ENABLE_5ELEMENT_PILOT=true`) для кросс-проверки цен по Беларуси.
-*   **Индивидуальный мониторинг цен (Price Watches):**
-    *   Пользователи могут подписаться на уведомления о падении цены конкретного товара прямо в чате с ботом.
-*   **Отказоустойчивость:**
-    *   Если API Onliner временно недоступен, бот переключается на резервный кэш с явным предупреждением пользователя (`fallback/stale cache`).
+Unlike standard discount scrapers, this bot exposes and strictly filters out **deceptive marketing markups** (such as artificial price hikes right before a sale) by analyzing the 12-month median price history of products.
 
 ---
 
-## 🚀 Быстрый запуск
+## 🎯 Key Features
 
-### 💻 Локальный запуск (Express + React)
+*   **Honest Discount Radar (Onliner Super-Prices):**
+    *   Scans the catalog and calculates the actual price deviation relative to the historical median price.
+    *   Filters out artificial or fake discounts (`isFakeDiscount`). If a seller claims a 70% discount but the current price is close to or higher than the 12-month median price, the deal is blocked.
+*   **Flexible Publishing Policies:**
+    *   **Price Constraints:** Filters out cheap/low-value items by default (minimum price threshold is set to `15 BYN` via `ONLINER_DEAL_MIN_PRICE_BYN`).
+    *   **Bypass Price Limits for Deep Discounts:** Any genuine discount of **50% or higher** automatically bypasses the minimum price check (e.g., an item priced at 1 BYN with a 95% honest discount is published).
+    *   **Minimum Offers Count:** Only considers deals with $\ge 2$ active sellers on Onliner to guarantee price competition.
+*   **Cross-Store Price Comparisons:**
+    *   Supports pilot price comparisons with the Belarusian retail chain **"5 element"** (`ENABLE_5ELEMENT_PILOT=true`) to cross-verify national pricing signals.
+*   **Personal Price Watches:**
+    *   Users can subscribe to real-time price drop notifications for specific items directly inside the Telegram Bot.
+*   **Stale-Cache Fallback:**
+    *   If the live Onliner catalog is temporarily unreachable, the bot serves the last cached snapshot labeled as a `fallback/stale cache` to avoid downtime.
 
-Для локального тестирования интерфейса и отладки сценариев:
+---
 
-1.  **Установите зависимости:**
+## 🚀 Quick Start
+
+### 💻 Local Run (Express + React)
+
+To test the web app layout and debug bot conversation logic locally:
+
+1.  **Install dependencies:**
     ```bash
     npm install
     ```
-2.  **Настройте окружение:**
-    Скопируйте пример конфигурации и заполните переменные:
+2.  **Setup Environment Variables:**
+    Copy the example template and fill in your secrets:
     ```bash
     cp .env.example .env
     ```
-3.  **Запустите dev-сервер:**
+3.  **Start Dev Server:**
     ```bash
     npm run dev
     ```
-    Откройте в браузере: [http://localhost:3000](http://localhost:3000)
+    Open in browser: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## ⛅ Развертывание в Cloudflare Workers
+## 🛡️ Cloudflare Workers Deployment
 
-Для круглосуточной и бесплатной работы планировщика и вебхука используется среда Cloudflare Workers.
+For a 24/7 free webhook and scheduled cron triggers, the bot compiles for and deploys to Cloudflare Workers.
 
-### Полезные команды сборки и деплоя:
+### Useful Build & Deployment Commands:
 
 ```bash
-# Локальный запуск симуляции воркера
+# Simulates the Cloudflare Worker environment locally
 npm run worker:dry-run
 
-# Деплой в Cloudflare
+# Deploy code to Cloudflare Workers
 npm run worker:deploy
 
-# Запуск тестов работоспособности воркера и API
+# Run health diagnostics check on the deployed worker
 npm run worker:doctor
 ```
 
 > [!IMPORTANT]
-> Секреты Cloudflare задаются через CLI Wrangler и не должны коммититься в репозиторий:
+> Cloudflare Worker secrets are set via the Wrangler CLI and must not be committed to Git:
 > `wrangler secret put TELEGRAM_BOT_TOKEN`
 > `wrangler secret put ADMIN_API_TOKEN`
 > `wrangler secret put TELEGRAM_WEBHOOK_SECRET`
 
 ---
 
-## 📊 Доступные API Эндпоинты
+## 📊 Available API Endpoints
 
-### Публичные / Пользовательские:
-*   `GET /app` — Входная точка Telegram Mini App
-*   `GET /api/health` — Состояние здоровья сервиса
-*   `POST /telegram/webhook` — Вебхук обработки сообщений Telegram
+### Public / Client Endpoints:
+*   `GET /app` — Entry point for the Telegram Mini App
+*   `GET /api/health` — Service health status
+*   `POST /telegram/webhook` — Telegram bot update receiver
 
-### Администрирование (требуется `ADMIN_API_TOKEN`):
-*   `GET /api/telegram/doctor` — Диагностика бота и прав в канале
-*   `POST /api/telegram/set-webhook` — Настройка адреса вебхука Telegram
-*   `GET /api/channel/status` — Лог последнего автопатрулирования канала и KV-кэша
-*   `POST /api/channel/publish-best-deals` — Ручной запуск проверки каталога и отправки скидок
+### Administrative Endpoints (requires `ADMIN_API_TOKEN`):
+*   `GET /api/telegram/doctor` — Diagnostics of bot configuration and channel admin permissions
+*   `POST /api/telegram/set-webhook` — Configures the Telegram Bot webhook URL
+*   `GET /api/channel/status` — Returns scheduled cron run logs and KV cache status
+*   `POST /api/channel/publish-best-deals` — Manually triggers a catalog scan and publishes qualifying deals
 
 ---
 
-## ⚙️ Конфигурация планировщика (wrangler.toml / .env)
+## ⚙️ Scheduler Configuration (wrangler.toml / .env)
 
-Бот настраивается через переменные окружения:
+The bot behavior is customizable using the following environment variables:
 
-| Переменная | Значение по умолчанию | Описание |
+| Variable | Default Value | Description |
 | :--- | :---: | :--- |
-| `ENABLE_TELEGRAM_DELIVERY` | `false` | Разрешить отправку сообщений в Telegram (иначе работает в режиме `dry-run`) |
-| `ENABLE_CHANNEL_CRON` | `false` | Включить автопубликацию скидок по cron-расписанию (`0 */6 * * *`) |
-| `MIN_HONEST_DISCOUNT_PERCENT` | `20` | Минимальная честная скидка для публикации |
-| `ONLINER_DEAL_MIN_PRICE_BYN` | `15` | Минимальная цена товара в BYN для публикации |
-| `ONLINER_DEAL_MIN_OFFERS` | `2` | Минимальное число активных продавцов на Onliner |
-| `ENABLE_PRICE_WATCHES` | `true` | Включить мониторинг цен для пользователей |
+| `ENABLE_TELEGRAM_DELIVERY` | `false` | Enables real message delivery to Telegram (otherwise acts as `dry-run`) |
+| `ENABLE_CHANNEL_CRON` | `false` | Enables scheduled discount scans on Cloudflare (`0 */6 * * *`) |
+| `MIN_HONEST_DISCOUNT_PERCENT` | `20` | Minimum honest discount percentage needed to qualify for the channel |
+| `ONLINER_DEAL_MIN_PRICE_BYN` | `15` | Minimum price threshold in BYN for publishing deals |
+| `ONLINER_DEAL_MIN_OFFERS` | `2` | Minimum active sellers count required on Onliner.by |
+| `ENABLE_PRICE_WATCHES` | `true` | Enables real-time price monitoring registrations for users |
 
 ---
 
-## 🧪 Тестирование и Контроль Качества
+## 🧪 Testing and Verification
 
-Перед отправкой изменений запустите локальную верификацию:
+Run the local verification checks before committing changes:
 
 ```bash
-# Быстрая проверка типов TypeScript
+# TypeScript compiler linting
 npm run lint
 
-# Сборка проекта для production
+# Compile production assets and bundle files
 npm run build
 
-# Запуск полной цепочки тестов (компиляция, тесты зрелости, локальные smoke-тесты)
+# Run combined verify suite (compilation, maturity, and local smoke mock servers)
 npm run verify:prod
 
-# Мягкая проверка соответствия схемы API Onliner (не падает при сетевом таймауте)
+# Verify structural compatibility with the live Onliner.by API contract
 npm run contract:onliner:soft
 ```
 
 ---
 
-## 🤝 Участие в разработке
+## 🤝 Contributing
 
-Мы рады любому вкладу в проект! Пожалуйста, ознакомьтесь с нашими руководствами перед началом работы:
-*   Правила разработки и формат коммитов: [CONTRIBUTING.md](.github/CONTRIBUTING.md)
-*   Политика безопасности и уязвимостей: [SECURITY.md](.github/SECURITY.md)
-*   Правила поведения сообщества: [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md)
+We welcome all contributions to this project! Please read our community guidelines before submitting a pull request:
+*   Commit rules and Git trailers format: [CONTRIBUTING.md](.github/CONTRIBUTING.md)
+*   Security disclosures and reporting policy: [SECURITY.md](.github/SECURITY.md)
+*   Community standards: [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md)
 
 ---
 
-## ⚖️ Лицензия
+## ⚖️ License
 
-Проект распространяется на условиях свободной лицензии **MIT**. Подробнее см. в файле [LICENSE](LICENSE).
+This project is licensed under the **MIT License**. For details, please see the [LICENSE](LICENSE) file.

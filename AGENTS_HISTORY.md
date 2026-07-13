@@ -64,3 +64,6 @@
 - **GitHub Repository Packaging (2026-07-13 19:54:00 +03:00)**:
   - **Change**: Added MIT LICENSE, SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, PULL_REQUEST_TEMPLATE.md, and structured YAML Issue templates (config, bug_report, feature_request). Rewrote README.md.
   - **Status**: DONE.
+- **Bilingual Repository Documentation (2026-07-13 19:57:00 +03:00)**:
+  - **Change**: Split README.md into two language variants. Created root English README.md and Russian README.ru.md, linking both at the top of each file to support international developers.
+  - **Status**: DONE.

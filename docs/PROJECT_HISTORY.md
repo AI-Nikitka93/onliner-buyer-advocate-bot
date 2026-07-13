@@ -12,3 +12,10 @@
 - Verification: Ran npm run verify:prod which passed successfully.
 - Status: DONE
 
+### 2026-07-13 19:57:00 +03:00 — Bilingual repository documentation setup
+- Changed: Split README.md into two language variants. Created root English README.md and Russian README.ru.md, linking both at the top of each file to support international developers.
+- Files: README.md, README.ru.md, docs/PROJECT_HISTORY.md
+- Verification: Validated file layouts and link formatting.
+- Status: DONE
+
+
