@@ -3781,36 +3781,66 @@ async function clearDealPublishReservation(env: Env, product: ProductView) {
 
 async function publishBestDealCore(env: Env, options: PublishBestDealOptions = { trigger: "manual" }) {
   const deals = await findDeals(env);
-  const selected = deals[0];
-  if (!selected) {
+  if (!deals.length) {
     return { published: false, reason: "No honest live Onliner deals matched the filter.", dealsCount: 0 };
   }
   if (!env.TELEGRAM_CHANNEL_ID) {
-    return { published: false, reason: "TELEGRAM_CHANNEL_ID is not configured.", dealsCount: deals.length, selected };
+    return { published: false, reason: "TELEGRAM_CHANNEL_ID is not configured.", dealsCount: deals.length };
   }
   if (env.ENABLE_TELEGRAM_DELIVERY !== "true") {
-    return { published: false, reason: "ENABLE_TELEGRAM_DELIVERY is not true.", dealsCount: deals.length, selected };
+    return { published: false, reason: "ENABLE_TELEGRAM_DELIVERY is not true.", dealsCount: deals.length };
   }
 
-  const dedupe = await checkDealDedupe(env, selected, options.force);
-  if (!dedupe.shouldPublish) {
-    return { published: false, reason: dedupe.reason, dealsCount: deals.length, selected, dedupe };
+  const publishedDeals: ProductView[] = [];
+  const limit = (options.trigger === "manual" || options.dryRun) ? 1 : 3;
+
+  for (const deal of deals) {
+    if (publishedDeals.length >= limit) break;
+
+    const isFirst = publishedDeals.length === 0;
+    const minPercent = isFirst ? envNumber(env.MIN_HONEST_DISCOUNT_PERCENT, 20) : 25;
+    if (deal.honestDiscountPercent < minPercent) {
+      continue;
+    }
+
+    const dedupe = await checkDealDedupe(env, deal, options.force);
+    if (!dedupe.shouldPublish) {
+      if (isFirst && limit === 1) {
+        return { published: false, reason: dedupe.reason, dealsCount: deals.length, selected: deal, dedupe };
+      }
+      continue;
+    }
+
+    const selectedForPost = await enrichSelectedDealForChannel(deal, env);
+    const postText = formatChannelPost(selectedForPost);
+
+    if (options.dryRun) {
+      return { published: false, dryRun: true, dealsCount: deals.length, selected: selectedForPost, dedupe, trigger: options.trigger, postText };
+    }
+
+    await rememberDealPublish(env, selectedForPost, "reserved");
+    try {
+      await sendTelegramMessage(env, env.TELEGRAM_CHANNEL_ID, postText);
+      await rememberDealPublish(env, selectedForPost, "posted");
+      publishedDeals.push(selectedForPost);
+      if (limit > 1) {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+      }
+    } catch (error) {
+      await clearDealPublishReservation(env, selectedForPost).catch(() => undefined);
+      console.error(`Failed to publish scheduled deal: ${deal.title}`, error);
+      if (isFirst) throw error;
+    }
   }
 
-  const selectedForPost = await enrichSelectedDealForChannel(selected, env);
-  const postText = formatChannelPost(selectedForPost);
-  if (options.dryRun) {
-    return { published: false, dryRun: true, dealsCount: deals.length, selected: selectedForPost, dedupe, trigger: options.trigger, postText };
-  }
-
-  await rememberDealPublish(env, selectedForPost, "reserved");
-  try {
-    await sendTelegramMessage(env, env.TELEGRAM_CHANNEL_ID, postText);
-  } catch (error) {
-    await clearDealPublishReservation(env, selectedForPost).catch(() => undefined);
-    throw error;
-  }
-  return { published: true, dealsCount: deals.length, selected: selectedForPost, dedupe, trigger: options.trigger };
+  return {
+    published: publishedDeals.length > 0,
+    publishedCount: publishedDeals.length,
+    dealsCount: deals.length,
+    selected: publishedDeals[0] || null,
+    publishedDeals,
+    trigger: options.trigger,
+  };
 }
 
 async function publishBestDeal(env: Env, options: PublishBestDealOptions = { trigger: "manual" }) {
@@ -4144,12 +4174,21 @@ async function handleTelegramWebhook(request: Request, env: Env) {
 
   if (value === "/start" || value === "/help") {
     await sendTelegramMessage(env, chatId, [
-      "🛡️ Я цифровой адвокат покупателя для catalog.onliner.by.",
+      "🛡️ *Адвокат Покупателя BY* — твой гид по честным скидкам на catalog.onliner.by!",
       "",
-      "Открой каталог внутри Telegram или отправь ссылку/название модели.",
+      "🔍 *Что я умею:*",
+      "• Анализирую историю цен и рассчитываю реальную (честную) скидку на основе медианной цены.",
+      "• Выявляю фейковые скидки и предупреждаю о манипуляциях с ценами.",
+      "• Слежу за ценами товаров из твоего списка ожидания и присылаю уведомления об их снижении.",
+      "",
+      "⚡ *Как пользоваться:*",
+      "• Открой интерактивный каталог кнопкой ниже.",
+      "• Или просто пришли мне ссылку на товар Onliner либо точное название модели.",
+      "",
+      "📢 *Наш Telegram-канал:*",
+      "Подписывайся на @BuyerAdvocateBYDeals, где автоматически публикуются самые горячие и проверенные скидки без накруток!",
+      "",
       "Команды: /catalog, /deals, /watchlist, /health",
-      "",
-      "Проект неофициальный, не аффилирован с Onliner.by. Разработано AI_Nikitka93.",
     ].join("\n"), catalogInlineMarkup(appUrl));
     return json({ ok: true });
   }
