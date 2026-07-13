@@ -70,3 +70,6 @@
 - **GitHub Screenshot Integration (2026-07-13 21:15:00 +03:00)**:
   - **Change**: Added responsive screenshots and branding assets to `docs/images/` and updated `README.md` and `README.ru.md` to reference them using relative paths.
   - **Status**: DONE.
+- **README layout simplified (2026-07-13 22:23:00 +03:00)**:
+  - **Change**: Removed Local Web Dashboard and Branding/Avatars sections from both READMEs.
+  - **Status**: DONE.

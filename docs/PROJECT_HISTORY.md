@@ -24,5 +24,12 @@
 - Verification: Pushed changes to GitHub repository origin master.
 - Status: DONE
 
+### 2026-07-13 22:23:00 +03:00 — Simplified README layout
+- Changed: Removed Web Dashboard and Branding/Avatars sections from English and Russian READMEs to focus purely on the Telegram Bot and Channel features.
+- Files: README.md, README.ru.md, docs/PROJECT_HISTORY.md
+- Verification: Pushed changes to master branch on GitHub.
+- Status: DONE
+
+
 
 
