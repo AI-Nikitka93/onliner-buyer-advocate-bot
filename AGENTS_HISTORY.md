@@ -57,3 +57,7 @@
   - **Change**: Added an exception in `isPublishableDeal` (both in Worker and Express server) where any deal with an honest discount $\ge 50\%$ automatically bypasses the minimum price constraint of 15 BYN.
   - **Impact**: Ensures that extreme/rare bargains (e.g. products marked down by 90%+ to 1 BYN) are captured and posted to the channel instead of being filtered.
   - **Redeployment**: Successfully updated and deployed to Cloudflare.
+- **Final Verification & Test Suite Fixes (2026-07-13 19:50:00 +03:00)**:
+  - **Correction**: Resolved testing assertions in `scripts/test-worker-webapp.mjs` by returning `dedupe` and `reason` of the primary candidate at the root of the `publishBestDealCore` returned object when looping through multiple deals.
+  - **Verification results**: Ran `npm run verify:prod` (Lint, Maturity, Release, Build, server and telegram smoke tests) -> **PASS**. Ran `npm run worker:test:webapp` -> **PASS**.
+  - **Redeployment**: Final verified worker deployed to Cloudflare successfully.
