@@ -3,7 +3,7 @@ description: Propose a new feature, enhancement, or capability.
 title: "[FEATURE]: "
 labels: ["enhancement"]
 type: feature
-projects: ["your-org/1"]
+projects: ["AI-Nikitka93/1"]
 body:
   - type: markdown
     attributes:

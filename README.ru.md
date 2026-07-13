@@ -2,7 +2,7 @@
 
 [English](README.md) | **Русский**
 
-[![Production Verify](https://github.com/your-org/onliner-buyer-advocate-bot/actions/workflows/verify.yml/badge.svg)](https://github.com/your-org/onliner-buyer-advocate-bot/actions/workflows/verify.yml)
+[![Production Verify](https://github.com/AI-Nikitka93/onliner-buyer-advocate-bot/actions/workflows/verify.yml/badge.svg)](https://github.com/AI-Nikitka93/onliner-buyer-advocate-bot/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform: Cloudflare Workers](https://img.shields.io/badge/Platform-Cloudflare_Workers-F38020.svg?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com)
 [![Stack: Node.js & TypeScript](https://img.shields.io/badge/Stack-Node.js_%2F_TypeScript-3178C6.svg?logo=typescript&logoColor=white)](package.json)

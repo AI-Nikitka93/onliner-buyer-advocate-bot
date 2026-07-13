@@ -12,7 +12,7 @@ To set up a local development environment:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your-org/onliner-buyer-advocate-bot.git
+   git clone https://github.com/AI-Nikitka93/onliner-buyer-advocate-bot.git
    cd onliner-buyer-advocate-bot
    ```
 
