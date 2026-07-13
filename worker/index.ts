@@ -3793,6 +3793,7 @@ async function publishBestDealCore(env: Env, options: PublishBestDealOptions = {
 
   const publishedDeals: ProductView[] = [];
   const limit = (options.trigger === "manual" || options.dryRun) ? 1 : 3;
+  let firstDedupe: any = undefined;
 
   for (const deal of deals) {
     if (publishedDeals.length >= limit) break;
@@ -3804,6 +3805,9 @@ async function publishBestDealCore(env: Env, options: PublishBestDealOptions = {
     }
 
     const dedupe = await checkDealDedupe(env, deal, options.force);
+    if (isFirst) {
+      firstDedupe = dedupe;
+    }
     if (!dedupe.shouldPublish) {
       if (isFirst && limit === 1) {
         return { published: false, reason: dedupe.reason, dealsCount: deals.length, selected: deal, dedupe };
@@ -3837,9 +3841,11 @@ async function publishBestDealCore(env: Env, options: PublishBestDealOptions = {
     published: publishedDeals.length > 0,
     publishedCount: publishedDeals.length,
     dealsCount: deals.length,
-    selected: publishedDeals[0] || null,
+    selected: deals[0] || null,
     publishedDeals,
     trigger: options.trigger,
+    dedupe: firstDedupe,
+    reason: publishedDeals.length === 0 ? (firstDedupe?.reason || "No deals published") : undefined,
   };
 }
 
