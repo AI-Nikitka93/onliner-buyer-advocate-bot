@@ -30,6 +30,7 @@ type Env = {
   PUBLIC_API_RATE_LIMIT_WINDOW_SECONDS?: string;
   PUBLIC_API_RATE_LIMITER?: RateLimitBinding;
   DEAL_ALERTS_KV?: KVNamespaceLike;
+  AUTO_PUBLISH_RARE_THRESHOLD_PERCENT?: string;
 };
 
 type RateLimitBinding = {
@@ -3989,12 +3990,39 @@ async function handleWebAppAnalyze(request: Request, env: Env) {
     result,
   });
 
+  if (product) {
+    await autoPublishRareDeal(product, env).catch((e) => console.error("AutoPublish rare deal failed:", e));
+  }
+
   return json({
     ok: true,
     found: Boolean(product),
     source: "answer_web_app_query",
     productId: product?.id,
   });
+}
+
+async function autoPublishRareDeal(product: ProductView, env: Env) {
+  if (!env.TELEGRAM_CHANNEL_ID || env.ENABLE_TELEGRAM_DELIVERY !== "true") return;
+
+  const rareThreshold = envPositiveInt(env.AUTO_PUBLISH_RARE_THRESHOLD_PERCENT, 35, 100);
+  if (!isPublishableDeal(product, rareThreshold, env)) return;
+
+  const dedupe = await checkDealDedupe(env, product, false);
+  if (!dedupe.shouldPublish) return;
+
+  const selectedForPost = await enrichSelectedDealForChannel(product, env);
+  const postText = formatChannelPost(selectedForPost);
+
+  await rememberDealPublish(env, selectedForPost, "reserved");
+  try {
+    await sendTelegramMessage(env, env.TELEGRAM_CHANNEL_ID, postText);
+    await rememberDealPublish(env, selectedForPost, "posted");
+    console.log(`[AutoPublish] Successfully published rare deal: ${product.title} (${product.honestDiscountPercent}% discount)`);
+  } catch (error) {
+    await clearDealPublishReservation(env, selectedForPost).catch(() => undefined);
+    console.error("[AutoPublish] Failed to publish rare deal:", error);
+  }
 }
 
 async function handleTelegramWebhook(request: Request, env: Env) {
@@ -4078,6 +4106,7 @@ async function handleTelegramWebhook(request: Request, env: Env) {
     }
 
     await sendTelegramMessage(env, callbackChatId, formatProductAnswer(product), productReplyMarkup(appUrl, product));
+    await autoPublishRareDeal(product, env).catch((e) => console.error("AutoPublish rare deal failed:", e));
     return json({ ok: true, found: true, source: "callback_query", productId: product.id });
   }
 
@@ -4107,6 +4136,7 @@ async function handleTelegramWebhook(request: Request, env: Env) {
     }
 
     await sendTelegramMessage(env, chatId, formatProductAnswer(product), productReplyMarkup(appUrl, product));
+    await autoPublishRareDeal(product, env).catch((e) => console.error("AutoPublish rare deal failed:", e));
     return json({ ok: true, found: true, source: "web_app_data", productId: product.id });
   }
 
@@ -4172,6 +4202,7 @@ async function handleTelegramWebhook(request: Request, env: Env) {
   }
 
   await sendTelegramMessage(env, chatId, formatProductAnswer(product), productReplyMarkup(appUrl, product));
+  await autoPublishRareDeal(product, env).catch((e) => console.error("AutoPublish rare deal failed:", e));
   return json({ ok: true, found: true, productId: product.id });
 }
 
