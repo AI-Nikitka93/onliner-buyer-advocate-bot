@@ -31,4 +31,7 @@
   - **Secrets Synced**: Uploaded `TELEGRAM_BOT_TOKEN`, `ADMIN_API_TOKEN`, `TELEGRAM_WEBHOOK_SECRET`, and `TELEGRAM_CHANNEL_ID` to the new worker.
   - **Webhook Configured**: Successfully set Telegram webhook pointing to the new worker URL via Bot API bypass.
   - **Git status**: Committed latest configuration and code changes.
-
+- **Worker Instant Rare Deal Auto-Publishing (2026-07-13 18:48:00 +03:00)**:
+  - **Implementation**: Added `autoPublishRareDeal(product, env)` helper to verify if a checked product is a rare discount (default threshold `>= 35%` honest discount, configurable via `AUTO_PUBLISH_RARE_THRESHOLD_PERCENT`), check channel deduplication, and instantly post to the Telegram channel.
+  - **Endpoints Integration**: Integrated this function into webhook callback queries (`analyze:`), web app analyze calls (`/api/webapp/analyze`), and direct bot chat search queries.
+  - **Verification**: Ran standard TS typings and verification suites. Deployed changes successfully to `https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev`.
