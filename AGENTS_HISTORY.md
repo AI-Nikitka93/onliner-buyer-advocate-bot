@@ -22,4 +22,13 @@
   - `npm run contract:onliner:soft` -> PASS
   - `npm run worker:test:webapp` -> PASS
   - `npm run docker:smoke` -> FAIL (WSL/Docker host virtual hard disk `E_ACCESSDENIED` issue)
-- **Git Status**: Git initialized locally; all updated/added files are currently in the staging/untracked state.
+- **Git Status**: Staged and committed initial files.
+- **Worker Deployment & Configuration (2026-07-13 18:40:00 +03:00)**:
+  - **Account migration**: Migrated worker deployment to the active user account (`35cf1c14e9e9c6adcb3ab43d0082ba0c`).
+  - **KV Namespace created**: Created a new `DEAL_ALERTS_KV` namespace (`85b6047d0b2b45d08d462bbadff51ef7`) and bound it in `wrangler.toml`.
+  - **Worker Deployed**: Successfully deployed worker to `https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev`.
+  - **Subrequest Limit Optimization**: Added `skipShopEnrichment` to `productFromOnliner` and `enrichPriceComparison` options to prevent shop lookup fetches for all deal candidates during discount scans. This keeps subrequests during cron scans well below Cloudflare's limit of 50, resolving the `publish_exception` (Too many subrequests).
+  - **Secrets Synced**: Uploaded `TELEGRAM_BOT_TOKEN`, `ADMIN_API_TOKEN`, `TELEGRAM_WEBHOOK_SECRET`, and `TELEGRAM_CHANNEL_ID` to the new worker.
+  - **Webhook Configured**: Successfully set Telegram webhook pointing to the new worker URL via Bot API bypass.
+  - **Git status**: Committed latest configuration and code changes.
+
