@@ -38,3 +38,7 @@
 - **Multi-Deal Scheduled Publishing (2026-07-13 18:52:00 +03:00)**:
   - **Implementation**: Updated `publishBestDealCore` inside `worker/index.ts` to iterate through all scanned deal candidates. Instead of publishing only the single best deal, it can now publish up to 3 qualifying deals per scheduler run if they meet the steep/sharp discount threshold (default: >=25%).
   - **Verification & Deployment**: Completed test verification and redeployed to Cloudflare.
+- **Price Threshold Constraint Lowered (2026-07-13 18:55:00 +03:00)**:
+  - **Change**: Updated `ONLINER_DEAL_MIN_PRICE_BYN` from `50` to `15` BYN across wrangler.toml, local .env configuration, Worker codebase default, and local Express server configurations.
+  - **Impact**: Enables scanning, catching, and publishing great discounts on cheaper goods (e.g. starting from 15 BYN instead of 50 BYN).
+  - **Redeployment**: Changes deployed successfully to Cloudflare Workers.
