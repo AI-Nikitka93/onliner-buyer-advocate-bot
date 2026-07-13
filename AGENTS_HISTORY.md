@@ -67,3 +67,6 @@
 - **Bilingual Repository Documentation (2026-07-13 19:57:00 +03:00)**:
   - **Change**: Split README.md into two language variants. Created root English README.md and Russian README.ru.md, linking both at the top of each file to support international developers.
   - **Status**: DONE.
+- **GitHub Screenshot Integration (2026-07-13 21:15:00 +03:00)**:
+  - **Change**: Added responsive screenshots and branding assets to `docs/images/` and updated `README.md` and `README.ru.md` to reference them using relative paths.
+  - **Status**: DONE.

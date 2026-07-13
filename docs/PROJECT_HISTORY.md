@@ -18,4 +18,11 @@
 - Verification: Validated file layouts and link formatting.
 - Status: DONE
 
+### 2026-07-13 21:15:00 +03:00 — Embedded screenshots and branding assets for GitHub presentation
+- Changed: Copied local screenshots and avatars into the project at docs/images/ and updated README.md and README.ru.md with relative image paths.
+- Files: README.md, README.ru.md, docs/images/*, docs/PROJECT_HISTORY.md
+- Verification: Pushed changes to GitHub repository origin master.
+- Status: DONE
+
+
 
