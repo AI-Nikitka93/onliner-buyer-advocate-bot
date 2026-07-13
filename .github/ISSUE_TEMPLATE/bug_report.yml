@@ -1,0 +1,67 @@
+name: 🐛 Bug Report
+description: Report a bug or issue in the Onliner Buyer Advocate Bot.
+title: "[BUG]: "
+labels: ["bug"]
+type: bug
+projects: ["your-org/1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting this issue! Please fill out this form to help us understand and resolve the bug faster.
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: E.g., The deal is filtered incorrectly even though the discount is real...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How did you run into this bug? Please provide the exact steps.
+      placeholder: |
+        1. Set local environment variables to...
+        2. Run 'npm run verify:prod'
+        3. Observe compilation error...
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Execution Environment
+      description: Where did you encounter this bug?
+      options:
+        - Cloudflare Workers (production)
+        - Local Express dev server
+        - Docker container
+        - Local scripts / CLI
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js & Tooling Version
+      description: Node.js version, OS, or Wrangler version (if applicable).
+      placeholder: E.g., Node v24.14.1, Windows 11, Wrangler v4.110.0
+    validations:
+      required: false
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics & Logs
+      description: Paste any terminal logs, worker error outputs, or JSON snapshots.
+      render: bash
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checks
+      options:
+        - label: I have verified that this issue is not already reported.
+          required: true
+        - label: I have tested my setup against the latest 'master' branch.
+          required: true

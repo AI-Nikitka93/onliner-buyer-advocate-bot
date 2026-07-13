@@ -1,0 +1,42 @@
+name: 🚀 Feature Request
+description: Propose a new feature, enhancement, or capability.
+title: "[FEATURE]: "
+labels: ["enhancement"]
+type: feature
+projects: ["your-org/1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to improve the bot? We'd love to hear it!
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: What would you like the bot or channel to do?
+      placeholder: E.g., Add integration for another price aggregator like Shop.by...
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: User Problem / Rationale
+      description: Why is this feature needed? What problem does it solve?
+      placeholder: E.g., Currently we only track Onliner, but we want to expand price coverage...
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Proposed Implementation Details
+      description: If you have a technical design or API details in mind, describe it here.
+      placeholder: Add new worker routing schema under /api/shop-source...
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched open issues to confirm this is not a duplicate request.
+          required: true
