@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-scroll-track: rgba(15, 23, 42, 0.4);
+  --color-scroll-thumb: rgba(99, 102, 241, 0.15);
+  --color-scroll-thumb-hover: rgba(99, 102, 241, 0.35);
+  --color-body-bg: rgb(2, 6, 23);
+}
+
+/* Custom Scrollbar styling for a native premium feeling inside simulated devices */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-scroll-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scroll-thumb);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scroll-thumb-hover);
+}
+
+/* Base custom classes */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-body-bg);
+}
+
+/* Slow spin custom helper for live radar dials */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+

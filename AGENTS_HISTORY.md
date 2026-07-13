@@ -1,0 +1,25 @@
+# AI Agents Project History Log
+
+### 2026-07-13 18:30:00 +03:00 — System Audit, Code and Style fixes, and Dependency updates
+- **Status**: DONE
+- **Coordinate Agent**: Antigravity Coordinator (Gemini 3.5 Flash)
+- **Subagents Triad**:
+  1. QA Specialist (`dabc69c5-698d-472a-9c0f-677a72d5b84e`)
+  2. System Auditor (`fc5204b7-3db8-4cd6-a5a7-18de2b239ed3`)
+  3. Release Manager (`c1131e9d-15dc-4ba0-bf2c-6702a41f0a39`)
+- **Vulnerabilities Patched**: Run `npm audit fix` resolved all 8 security vulnerabilities (vite, undici, ws, protobufjs, esbuild, @babel/core).
+- **Dependencies Updated**: 42 outdated npm packages safely updated to their latest semver-compatible versions.
+- **Code & Logic Fixes**:
+  - **Heuristic matching bug resolved** in `worker/index.ts`: Replaced `storageSignature` with a robust `parseMemory` utility which extracts and compares both RAM and storage size (normalizing TB to GB). It explicitly rejects candidates with differing memory configurations.
+  - **Rate limiter transient KV failures resolved** in `worker/index.ts`: Wrapped all `env.DEAL_ALERTS_KV` reads/writes in a try-catch block to fail-open.
+  - **Rate limiter TTL crash resolved** in `worker/index.ts`: Clamped `expirationTtl` to `Math.max(60, windowSeconds + 30)` to satisfy Cloudflare's minimum 60-second KV TTL rule.
+  - **Missing SDAPI Price History fallback resolved** in `worker/index.ts`: Updated `getOnlinerPriceHistory` to fall back to `CATALOG_SDAPI_BASE` if `CATALOG_API_BASE` is unreachable.
+- **Style Fixes**:
+  - **Zero-Trust style gate resolved** in `src/index.css`: Replaced hardcoded CSS colors with CSS variables defined under the `@theme` directive, utilizing `var()` reference syntax to satisfy `adwp_guardrails.ps1`.
+- **Verification Summary**:
+  - `adwp_guardrails.ps1` -> PASS
+  - `npm run verify:prod` (tsc lint, maturity tests, release readiness tests, vite build, server & telegram webhook smoke checks) -> PASS
+  - `npm run contract:onliner:soft` -> PASS
+  - `npm run worker:test:webapp` -> PASS
+  - `npm run docker:smoke` -> FAIL (WSL/Docker host virtual hard disk `E_ACCESSDENIED` issue)
+- **Git Status**: Git initialized locally; all updated/added files are currently in the staging/untracked state.

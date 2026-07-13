@@ -1,0 +1,15 @@
+node_modules
+dist
+build
+coverage
+output
+data/runtime-state.json
+data/*.tmp
+*.log
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+Dockerfile
+docker-compose*.yml
