@@ -1715,13 +1715,11 @@ function isPublishableDeal(product: ProductView, minDiscountPercent: number, env
   const minPrice = envNumber(env.ONLINER_DEAL_MIN_PRICE_BYN, DEFAULT_DEAL_MIN_PRICE_BYN);
   const minOffers = envPositiveInt(env.ONLINER_DEAL_MIN_OFFERS, DEFAULT_DEAL_MIN_OFFERS, 20);
   const onlinerOffers = product.priceComparison.sources.find((source) => source.source === "onliner_marketplace")?.offersCount || 0;
-  const ratingOk = product.ratingCount === 0 || product.rating >= 4;
   return (
     product.honestDiscountPercent >= minDiscountPercent
     && !product.isFakeDiscount
     && product.currentPrice >= minPrice
     && onlinerOffers >= minOffers
-    && ratingOk
   );
 }
 

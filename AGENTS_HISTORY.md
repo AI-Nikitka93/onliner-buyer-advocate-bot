@@ -42,3 +42,10 @@
   - **Change**: Updated `ONLINER_DEAL_MIN_PRICE_BYN` from `50` to `15` BYN across wrangler.toml, local .env configuration, Worker codebase default, and local Express server configurations.
   - **Impact**: Enables scanning, catching, and publishing great discounts on cheaper goods (e.g. starting from 15 BYN instead of 50 BYN).
   - **Redeployment**: Changes deployed successfully to Cloudflare Workers.
+
+### 2026-07-13 19:00:00 +03:00 — Deal-Scanning Logic Verification and Audit
+- Changed: Created and executed a detailed verification and audit script for the Onliner catalog deal scanner and filtering logic.
+- Files: `scripts/audit_onliner.ts`, `data/audit_results.json`.
+- Verification: Ran `npx tsx scripts/audit_onliner.ts` to fetch 100 super-price discounts, fetch history, check criteria, and generate reports.
+- Status: DONE
+

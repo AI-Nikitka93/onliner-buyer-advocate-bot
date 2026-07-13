@@ -933,13 +933,11 @@ function isSuperPriceCandidate(product: OnlinerProduct, minDiscountPercent: numb
 function isPublishableDeal(product: Product, minDiscountPercent: number): boolean {
   const minPrice = envPositiveNumber(process.env.ONLINER_DEAL_MIN_PRICE_BYN, DEFAULT_DEAL_MIN_PRICE_BYN);
   const minOffers = envPositiveInt(process.env.ONLINER_DEAL_MIN_OFFERS, DEFAULT_DEAL_MIN_OFFERS, 20);
-  const ratingOk = product.ratingCount === 0 || product.rating >= 4;
   return (
     product.honestDiscountPercent >= minDiscountPercent
     && !product.isFakeDiscount
     && product.currentPrice >= minPrice
     && product.offersCount >= minOffers
-    && ratingOk
   );
 }
 
