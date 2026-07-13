@@ -399,7 +399,7 @@ const FIVE_ELEMENT_SEARCH_BASE = "https://sort.diginetica.net/search";
 const DEFAULT_SCHEMAS = ["mobile", "notebook", "tv", "headphones", "tabletpc", "watch", "videocard", "styler"];
 const DEFAULT_DEAL_SCAN_LIMIT = 50;
 const DEFAULT_DEAL_ANALYZE_LIMIT = 6;
-const DEFAULT_DEAL_MIN_PRICE_BYN = 50;
+const DEFAULT_DEAL_MIN_PRICE_BYN = 15;
 const DEFAULT_DEAL_MIN_OFFERS = 2;
 const CATALOG_CATEGORIES: CatalogCategory[] = [
   { schema: "all", title: "Все", defaultQuery: "redmi" },

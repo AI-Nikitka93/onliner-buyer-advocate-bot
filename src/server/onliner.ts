@@ -6,7 +6,7 @@ const CATALOG_API_BASE = "https://catalog.api.onliner.by";
 const SHOP_API_BASE = "https://shop.api.onliner.by";
 const DEFAULT_DEAL_SCAN_LIMIT = 50;
 const DEFAULT_DEAL_ANALYZE_LIMIT = 4;
-const DEFAULT_DEAL_MIN_PRICE_BYN = 50;
+const DEFAULT_DEAL_MIN_PRICE_BYN = 15;
 const DEFAULT_DEAL_MIN_OFFERS = 2;
 
 const DEFAULT_SEARCH_SCHEMAS = [
