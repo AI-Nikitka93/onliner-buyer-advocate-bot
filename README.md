@@ -129,6 +129,33 @@ npm run contract:onliner:soft
 
 ---
 
+## 📸 Screenshots & Design
+
+### 🤖 Telegram Bot Interface
+The bot delivers clear value signals by exposing artificial price markups, displaying price dynamics, and providing summarized user reviews:
+
+<p align="center">
+  <img src="docs/images/bot_telegram_price_history.png" width="45%" alt="Price History Check" />
+  <img src="docs/images/bot_telegram_price_comparison.png" width="45%" alt="Price Comparison Check" />
+</p>
+
+### 🖥️ Local Web Dashboard
+A sleek, glassmorphic dark-theme dashboard designed for local runs, diagnostic controls, and test triggers:
+
+<p align="center">
+  <img src="docs/images/localhost_homepage.png" width="90%" alt="Web Dashboard" />
+</p>
+
+### 🎨 Branding / Avatars
+Premium identity assets created for the bot and the channel:
+
+<p align="center">
+  <img src="docs/images/bot_avatar.jpg" width="45%" alt="Bot Avatar" />
+  <img src="docs/images/channel_avatar.jpg" width="45%" alt="Channel Avatar" />
+</p>
+
+---
+
 ## 🤝 Contributing
 
 We welcome all contributions to this project! Please read our community guidelines before submitting a pull request:
