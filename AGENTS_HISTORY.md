@@ -61,3 +61,6 @@
   - **Correction**: Resolved testing assertions in `scripts/test-worker-webapp.mjs` by returning `dedupe` and `reason` of the primary candidate at the root of the `publishBestDealCore` returned object when looping through multiple deals.
   - **Verification results**: Ran `npm run verify:prod` (Lint, Maturity, Release, Build, server and telegram smoke tests) -> **PASS**. Ran `npm run worker:test:webapp` -> **PASS**.
   - **Redeployment**: Final verified worker deployed to Cloudflare successfully.
+- **GitHub Repository Packaging (2026-07-13 19:54:00 +03:00)**:
+  - **Change**: Added MIT LICENSE, SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, PULL_REQUEST_TEMPLATE.md, and structured YAML Issue templates (config, bug_report, feature_request). Rewrote README.md.
+  - **Status**: DONE.
