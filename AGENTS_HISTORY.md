@@ -35,3 +35,6 @@
   - **Implementation**: Added `autoPublishRareDeal(product, env)` helper to verify if a checked product is a rare discount (default threshold `>= 35%` honest discount, configurable via `AUTO_PUBLISH_RARE_THRESHOLD_PERCENT`), check channel deduplication, and instantly post to the Telegram channel.
   - **Endpoints Integration**: Integrated this function into webhook callback queries (`analyze:`), web app analyze calls (`/api/webapp/analyze`), and direct bot chat search queries.
   - **Verification**: Ran standard TS typings and verification suites. Deployed changes successfully to `https://onliner-buyer-advocate-bot.alexaiartbel.workers.dev`.
+- **Multi-Deal Scheduled Publishing (2026-07-13 18:52:00 +03:00)**:
+  - **Implementation**: Updated `publishBestDealCore` inside `worker/index.ts` to iterate through all scanned deal candidates. Instead of publishing only the single best deal, it can now publish up to 3 qualifying deals per scheduler run if they meet the steep/sharp discount threshold (default: >=25%).
+  - **Verification & Deployment**: Completed test verification and redeployed to Cloudflare.
