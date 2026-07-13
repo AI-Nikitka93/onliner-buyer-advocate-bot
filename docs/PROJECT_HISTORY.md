@@ -30,6 +30,13 @@
 - Verification: Pushed changes to master branch on GitHub.
 - Status: DONE
 
+### 2026-07-13 22:26:00 +03:00 — Product-only README presentation (hiding installation & setup)
+- Changed: Removed all technical installation commands, deployment scripts, Cloudflare settings, and local developer setup instructions from README.md and README.ru.md. Maintained only high-level features, Telegram Bot/Channel links, and Telegram UI screenshots.
+- Files: README.md, README.ru.md, docs/PROJECT_HISTORY.md
+- Verification: Pushed changes to GitHub repository origin master.
+- Status: DONE
+
+
 
 
 

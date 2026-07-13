@@ -73,3 +73,6 @@
 - **README layout simplified (2026-07-13 22:23:00 +03:00)**:
   - **Change**: Removed Local Web Dashboard and Branding/Avatars sections from both READMEs.
   - **Status**: DONE.
+- **Product-only README (2026-07-13 22:26:00 +03:00)**:
+  - **Change**: Removed all local/CF/endpoints/verify command blocks from both READMEs. Only kept bot/channel value props, screenshots, and direct Telegram links.
+  - **Status**: DONE.
