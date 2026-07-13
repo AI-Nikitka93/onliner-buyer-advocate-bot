@@ -53,3 +53,7 @@
   - **Change**: Removed `ratingOk` constraint check from `isPublishableDeal` inside both `worker/index.ts` and `src/server/onliner.ts`.
   - **Impact**: Products with ratings under 4.0 (like popular SSDs and other products with mixed reviews) can now be published if they offer a genuine honest discount.
   - **Redeployment**: Changes compiled and deployed successfully to Cloudflare.
+- **Extreme Discount Price Check Bypass (2026-07-13 19:04:00 +03:00)**:
+  - **Change**: Added an exception in `isPublishableDeal` (both in Worker and Express server) where any deal with an honest discount $\ge 50\%$ automatically bypasses the minimum price constraint of 15 BYN.
+  - **Impact**: Ensures that extreme/rare bargains (e.g. products marked down by 90%+ to 1 BYN) are captured and posted to the channel instead of being filtered.
+  - **Redeployment**: Successfully updated and deployed to Cloudflare.
