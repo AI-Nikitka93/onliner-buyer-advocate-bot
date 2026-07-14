@@ -76,3 +76,6 @@
 - **Product-only README (2026-07-13 22:26:00 +03:00)**:
   - **Change**: Removed all local/CF/endpoints/verify command blocks from both READMEs. Only kept bot/channel value props, screenshots, and direct Telegram links.
   - **Status**: DONE.
+- **Price History Outlier Filtering (2026-07-14 13:28:00 +03:00)**:
+  - **Change**: Added filtering for placeholder prices (8888, 9999, etc.) and extreme stock shortage spikes (> 3x min price) from Onliner price history data, falling back to 2m daily history if 12m monthly points are depleted. Sanitized API-reported median price fallback values in `productFromOnliner`.
+  - **Status**: DONE.

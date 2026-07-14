@@ -36,6 +36,13 @@
 - Verification: Pushed changes to GitHub repository origin master.
 - Status: DONE
 
+### 2026-07-14 13:28:00 +03:00 — Фильтрация выбросов истории цен и аномалий
+- Changed: Добавлена фильтрация заглушек цен (8888, 9999, 99999, 999999) и экстремальных выбросов цены (> 3x от минимума) в историю цен Onliner.by. Санирована медианная цена, получаемая из API, во избежание фейковых скидок при отсутствии товара на складе.
+- Files: src/server/onliner.ts, docs/PROJECT_HISTORY.md
+- Verification: Пройдены тесты линтинга и верификации, развернуто в Cloudflare Workers через wrangler.
+- Status: DONE
+
+
 
 
 

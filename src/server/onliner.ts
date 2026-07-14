@@ -381,7 +381,7 @@ function normalizePriceHistory(
   endpoint: string,
 ): NormalizedPriceHistory {
   const currency = response.chart_data?.currency || response.prices?.current?.currency || "BYN";
-  const points = (response.chart_data?.items || [])
+  const rawPoints = (response.chart_data?.items || [])
     .map((item) => ({
       date: item.date || "",
       price: toNumber(item.price || ""),
@@ -390,6 +390,29 @@ function normalizePriceHistory(
     }))
     .filter((point) => point.date && point.price > 0)
     .sort((a, b) => priceHistoryDateMs(a.date) - priceHistoryDateMs(b.date));
+
+  // Filter out placeholder prices and extreme stock-shortage spikes (outliers > 3x min price)
+  const validPrices = rawPoints.map((p) => p.price).filter((price) => price >= 15);
+  const minPrice = validPrices.length > 0 ? Math.min(...validPrices) : 0;
+
+  const filteredPoints = rawPoints.filter((point) => {
+    // Common placeholder prices used on Onliner when stock is depleted or items are disabled
+    if (
+      point.price === 8888 ||
+      point.price === 9999 ||
+      point.price === 99999 ||
+      point.price === 999999
+    ) {
+      return false;
+    }
+    // Prices that are > 3x the minimum valid price are almost certainly stock-outage placeholders or error prices
+    if (minPrice > 0 && point.price > minPrice * 3) {
+      return false;
+    }
+    return true;
+  });
+
+  const points = filteredPoints.length > 0 ? filteredPoints : rawPoints;
 
   const times = points.map((point) => priceHistoryDateMs(point.date)).filter((time) => time > 0);
   const windowDays = times.length >= 2
@@ -782,8 +805,11 @@ export async function productFromOnliner(product: OnlinerProduct): Promise<Produ
     || toNumber(product.prices?.price_min?.amount)
     || positionPrices[0]
     || 0;
-  const apiMedianPrice = toNumber(priceHistory?.response.sale?.min_prices_median?.amount)
+  let apiMedianPrice = toNumber(priceHistory?.response.sale?.min_prices_median?.amount)
     || toNumber(product.sale?.min_prices_median?.amount);
+  if (currentPrice >= 15 && apiMedianPrice > currentPrice * 3) {
+    apiMedianPrice = currentPrice;
+  }
   const medianPrice = priceHistory?.medianPrice || apiMedianPrice || currentPrice;
   const advertisedDiscount = toNumber(priceHistory?.response.sale?.discount) || toNumber(product.sale?.discount);
   const originalPrice = advertisedDiscount > 0 && currentPrice > 0
