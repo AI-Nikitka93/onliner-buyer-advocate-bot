@@ -391,28 +391,26 @@ function normalizePriceHistory(
     .filter((point) => point.date && point.price > 0)
     .sort((a, b) => priceHistoryDateMs(a.date) - priceHistoryDateMs(b.date));
 
-  // Filter out placeholder prices and extreme stock-shortage spikes (outliers > 3x min price)
-  const validPrices = rawPoints.map((p) => p.price).filter((price) => price >= 15);
-  const minPrice = validPrices.length > 0 ? Math.min(...validPrices) : 0;
+  // Filter out common placeholder prices used on Onliner when stock is depleted or items are disabled
+  const basePoints = rawPoints.filter((point) => {
+    return (
+      point.price !== 8888 &&
+      point.price !== 9999 &&
+      point.price !== 99999 &&
+      point.price !== 999999
+    );
+  });
 
-  const filteredPoints = rawPoints.filter((point) => {
-    // Common placeholder prices used on Onliner when stock is depleted or items are disabled
-    if (
-      point.price === 8888 ||
-      point.price === 9999 ||
-      point.price === 99999 ||
-      point.price === 999999
-    ) {
-      return false;
-    }
-    // Prices that are > 3x the minimum valid price are almost certainly stock-outage placeholders or error prices
-    if (minPrice > 0 && point.price > minPrice * 3) {
+  const baseMedian = median(basePoints.map((p) => p.price));
+
+  // Filter out extreme stock-shortage spikes (outliers > 3x median price)
+  // We use median instead of minPrice to avoid filtering out legitimate old high prices during massive discounts
+  const points = basePoints.filter((point) => {
+    if (baseMedian > 0 && point.price > baseMedian * 3) {
       return false;
     }
     return true;
   });
-
-  const points = filteredPoints.length > 0 ? filteredPoints : rawPoints;
 
   const times = points.map((point) => priceHistoryDateMs(point.date)).filter((time) => time > 0);
   const windowDays = times.length >= 2
@@ -807,17 +805,27 @@ export async function productFromOnliner(product: OnlinerProduct): Promise<Produ
     || 0;
   let apiMedianPrice = toNumber(priceHistory?.response.sale?.min_prices_median?.amount)
     || toNumber(product.sale?.min_prices_median?.amount);
-  if (currentPrice >= 15 && apiMedianPrice > currentPrice * 3) {
+
+  if (
+    apiMedianPrice === 8888 ||
+    apiMedianPrice === 9999 ||
+    apiMedianPrice === 99999 ||
+    apiMedianPrice === 999999
+  ) {
+    apiMedianPrice = currentPrice;
+  } else if (currentPrice >= 15 && apiMedianPrice > currentPrice * 10) {
+    // Only cap extreme anomalies (e.g. >10x current price) to avoid destroying legitimate deep discounts
     apiMedianPrice = currentPrice;
   }
+
   const medianPrice = priceHistory?.medianPrice || apiMedianPrice || currentPrice;
   const advertisedDiscount = toNumber(priceHistory?.response.sale?.discount) || toNumber(product.sale?.discount);
-  const originalPrice = advertisedDiscount > 0 && currentPrice > 0
+  const originalPrice = advertisedDiscount > 0 && advertisedDiscount < 100 && currentPrice > 0
     ? Math.round(currentPrice / (1 - advertisedDiscount / 100))
     : Math.max(currentPrice, medianPrice);
 
-  const honestDiscountPercent = medianPrice > 0 ? round1(((medianPrice - currentPrice) / medianPrice) * 100) : 0;
-  const priceManipulationWarning = discountManipulationWarning(advertisedDiscount, honestDiscountPercent);
+  const honestDiscountPercent = (medianPrice > 0 && currentPrice > 0) ? round1(((medianPrice - currentPrice) / medianPrice) * 100) : 0;
+  const priceManipulationWarning = currentPrice > 0 ? discountManipulationWarning(advertisedDiscount, honestDiscountPercent) : undefined;
   const isFakeDiscount = Boolean(priceManipulationWarning);
   const rating = ratingFromOnliner(product.reviews?.rating);
   const ratingCount = product.reviews?.count || reviews.length;

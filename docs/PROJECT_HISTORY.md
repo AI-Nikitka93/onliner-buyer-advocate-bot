@@ -47,3 +47,12 @@
 
 
 
+
+### 2026-07-14 13:40:00 +03:00 — Core Data Parsing & Logic Audit (Onliner Edge Cases)
+- Changed: Fixed deep discount suppression in 
+ormalizePriceHistory by using median instead of minPrice. Updated piMedianPrice clipping logic to handle outliers securely without dropping legitimate extreme discounts. Addressed NaN/Infinity edge cases in originalPrice computation, and fixed a bug where a missing currentPrice would incorrectly yield a 100% discount.
+- Files: src/server/onliner.ts
+- Verification: Ran 
+pm run build and 
+px tsc --noEmit. Both passed successfully.
+- Status: DONE
